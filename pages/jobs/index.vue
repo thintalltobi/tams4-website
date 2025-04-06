@@ -60,7 +60,7 @@
 </template>
 
 <script setup lang="ts">
-import { useHead } from "nuxt/app";
+import { useHead, useRuntimeConfig } from "nuxt/app";
 import { ref } from "vue";
 import axios from "axios";
 import JobFilters from "../../components/jobs/JobFilters.vue";
@@ -68,6 +68,8 @@ import JobCards from "../../components/jobs/JobCards.vue";
 import JobDetails from "../../components/jobs/JobDetails.vue";
 import JobApply from "../../components/jobs/JobApply.vue";
 import Loading from "../../components/base/loading.vue";
+
+const config = useRuntimeConfig();
 
 const showLoading = ref(false);
 const jobs = ref<[]>([]);
@@ -94,7 +96,7 @@ async function fetchJobs() {
     const { type, work_mode, search_query, page, per_page } = filters.value;
 
     const response = await axios.get(
-      "https://staging-api.tams.com.ng/api/v1/jobs",
+      `${config.public.apiUrl}/jobs`,
       {
         params: {
           page: page,

@@ -235,7 +235,8 @@
 import { ref, reactive } from "vue";
 import axios from "axios";
 import { ElNotification } from "element-plus";
-
+import { useRuntimeConfig } from "nuxt/app";
+const config = useRuntimeConfig();
 interface Job {
   logo: string;
   id: number;
@@ -318,7 +319,6 @@ async function handleSubmit() {
 
   try {
     // const resumeURL = await getBase64(form.resumeFile);
-
     const payload = {
       uuid: props.jobs[props.selectedJob].uuid,
       name: `${form.firstName} ${form.lastName}`,
@@ -330,7 +330,7 @@ async function handleSubmit() {
     };
 
     await axios.post(
-      "https://staging-api.tams.com.ng/api/v1/job-application",
+      `${config.public.apiUrl}/job-application`,
       payload
     );
 
