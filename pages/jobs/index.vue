@@ -1,10 +1,15 @@
 <template>
   <div class="bg-white">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div
+      v-if="pageIndex === 1"
+      class="container mx-auto px-4 sm:px-6 lg:px-8 py-8"
+    >
       <!-- Filter Section -->
       <JobFilters @apply-filters="applyFilters" />
 
-      <h1 class="mt-10 text-xl font-semibold">40 Job Openings</h1>
+      <h1 class="mt-10 text-xl font-semibold">
+        {{ jobsTotal || 0 }} Job Openings
+      </h1>
 
       <!-- Main Section -->
       <div class="grid grid-cols-1 lg:grid-cols-7 gap-8 mt-4">
@@ -13,86 +18,127 @@
           <JobCards
             :jobs="jobs"
             :selected-job="selectedJob"
+            :total="jobsTotal"
             @select-job="selectJob"
+            @page-changed="
+              (page) => {
+                filters.page = page;
+                fetchJobs();
+              }
+            "
           />
         </div>
 
         <!-- Right Section (Job Details) -->
         <div class="lg:col-span-5 hidden lg:block">
-          <JobDetails :jobs="jobs" :selected-job="selectedJob" />
+          <JobDetails
+            :jobs="jobs"
+            :selected-job="selectedJob"
+            @page-index="changePageIndex"
+          />
         </div>
       </div>
 
       <!-- Show Job Details below on mobile -->
       <div class="lg:hidden mt-6">
-        <JobDetails :jobs="jobs" :selected-job="selectedJob" />
+        <JobDetails
+          :jobs="jobs"
+          :selected-job="selectedJob"
+          @page-index="changePageIndex"
+        />
       </div>
-
-      <Loading :visible="showLoading" text="Getting all Jobs..." />
+    </div>
+    <Loading :visible="showLoading" text="Getting all Jobs..." />
+    <div v-if="pageIndex === 2">
+      <JobApply
+        :jobs="jobs"
+        :selected-job="selectedJob"
+        @page-index="changePageIndex"
+      />
     </div>
   </div>
 </template>
 
-
 <script setup lang="ts">
+import { useHead } from "nuxt/app";
 import { ref } from "vue";
+import axios from "axios";
 import JobFilters from "../../components/jobs/JobFilters.vue";
 import JobCards from "../../components/jobs/JobCards.vue";
 import JobDetails from "../../components/jobs/JobDetails.vue";
+import JobApply from "../../components/jobs/JobApply.vue";
 import Loading from "../../components/base/loading.vue";
 
 const showLoading = ref(false);
-
-const jobs = ref([
-  {
-    logo: "/img/seamless.svg",
-    company: "TechCorp",
-    role: "Frontend Developer",
-    location: "Lagos, Nigeria",
-    type: "Fulltime",
-    workType: "Hybrid",
-    remaining: 20,
-    posted: "4 Days Ago",
-    applicants: "Over 100",
-    description:
-      "Develop and maintain user-facing features for our web applications.",
-    qualification: "Bachelor's degree in Computer Science or related field.",
-    additionalInfo: "Experience with Vue.js is a plus.",
-  },
-  {
-    logo: "/img/seamless.svg",
-    company: "DesignPro",
-    role: "UI/UX Designer",
-    location: "Abuja, Nigeria",
-    type: "Contract",
-    workType: "Remote",
-    remaining: 15,
-    posted: "2 Days Ago",
-    applicants: "50+",
-    description:
-      "Design user-friendly interfaces for our mobile and web applications.",
-    qualification: "Proven experience in UI/UX design.",
-    additionalInfo: "Proficiency in Figma or Adobe XD is required.",
-  },
-]);
-
+const jobs = ref<[]>([]);
+const jobsTotal = ref(0);
+const pageIndex = ref(1);
 const selectedJob = ref<number | null>(null);
 
+// Filters
+const filters = ref({
+  page: 1,
+  per_page: 10,
+  type: "",
+  work_mode: "",
+  search_query: "",
+});
+
+function changePageIndex(value: number) {
+  pageIndex.value = value;
+}
+
+async function fetchJobs() {
+  try {
+    showLoading.value = true;
+    const { type, work_mode, search_query, page, per_page } = filters.value;
+
+    const response = await axios.get(
+      "https://staging-api.tams.com.ng/api/v1/jobs",
+      {
+        params: {
+          page: page,
+          per_page: per_page,
+          type: type || undefined,
+          work_mode: work_mode || undefined,
+          search_query: search_query || undefined,
+        },
+      }
+    );
+
+    jobs.value = response.data?.data.results || [];
+    jobsTotal.value = response.data?.data.total || 0;
+
+    console.log(jobs.value);
+  } catch (error) {
+    console.error("Error fetching jobs:", error);
+  } finally {
+    showLoading.value = false;
+  }
+}
+
+// Triggered when JobFilters emits new filters
+function applyFilters(newFilters: typeof filters.value) {
+  filters.value = { ...newFilters, page: 1, per_page: 10 };
+  fetchJobs();
+}
+
+// Select a job card
 function selectJob(index: number) {
   selectedJob.value = index;
 }
 
-function applyFilters(filters: string) {
-  console.log("Filters applied:", filters);
-}
+// Fetch on initial load
+fetchJobs();
 
 useHead({
-    title: 'Jobs',
-    meta: [
-      {
-        name: 'description',
-        content: 'Find your dream job with TAMS. Explore job openings, apply directly, and manage your applications seamlessly.',
-      },
-    ],
-  });
+  title: "Jobs",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Find your dream job with TAMS. Explore job openings, apply directly, and manage your applications seamlessly.",
+    },
+  ],
+});
 </script>

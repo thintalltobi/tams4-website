@@ -12,7 +12,7 @@
           <h3 class="text-xl font-semibold text-[#3395CD] mb-5">Company</h3>
           <ul class="space-y-4 text-[#F8FAFC]">
             <li><a href="/demo">Request Demo</a></li>
-            <li><a href="/auth/signup">Create free account</a></li>
+            <li><a href="https://signup.tams.com.ng/signup" target="_blank">Create free account</a></li>
             <li><a href="/terms-and-conditions">Terms and Conditions</a></li>
             <li><a href="/contact">Contact Us</a></li>
           </ul>

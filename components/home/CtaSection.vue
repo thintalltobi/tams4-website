@@ -15,9 +15,9 @@
           <div class="flex justify-center space-x-4">
             <button class="px-6 py-3 border border-white text-white rounded-md hover:bg-[#001927]">
               
-              <nuxt-link to="/auth/signup">
+              <a href="https://signup.tams.com.ng/signup" target="_blank">
                 Create Free Account
-              </nuxt-link>
+              </a>
             </button>
             <button class="px-6 py-3 bg-[#0564A4] text-white rounded-md hover:bg-[#001927]">
               <nuxt-link to="/demo">
