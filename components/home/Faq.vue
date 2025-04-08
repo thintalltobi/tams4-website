@@ -3,7 +3,7 @@
   <section class="bg-white py-20">
     <div class="container mx-auto px-4">
       <!-- FAQ Title -->
-      <h2 class="text-3xl md:text-4xl font-bold text-center mb-8">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-5">
         Frequently Asked Questions
       </h2>
       <!-- FAQ Subtitle -->
@@ -23,12 +23,32 @@
           :answer="faq.answer"
         />
       </div>
+
+      <div class="flex justify-center">
+        <button
+          class=" mt-10 border border-[#0564A4] bg-white text-[#0564A4] font-semibold py-2 px-4 rounded"
+        >
+          <nuxt-link to="/faqs" class="flex items-center justify-center space-x-2 "><span>See More</span>
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 15 15"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5 0V2H11.59L0 13.59L1.41 15L13 3.41V10H15V0H5Z"
+              fill="#0564A4"
+            />
+          </svg></nuxt-link>
+        </button>
+      </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import FaqAccordion from "@/components/base/accordion.vue";
+import FaqAccordion from "../../components/base/accordion.vue";
 
 const faqs = [
   {

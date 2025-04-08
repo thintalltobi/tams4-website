@@ -135,6 +135,20 @@ const testimonials = [
       "We told them our problems and we worked out a solution. Their strongest point is being able to design their own software that works for you. TAMS has been able to help us capture attendance of our staff, which in turn improves productivity.",
     image: "/img/user-1.png",
   },
+  {
+    name: "Rachael Ademola",
+    role: "HR Manager, Leadway",
+    quote:
+      "Tracking shifts and attendance has become seamless. Our payroll is always accurate!",
+    image: "/img/user-1.png",
+  },
+  {
+    name: "Bola Akande",
+    role: "GIG Logistics",
+    quote:
+      "From onboarding to performance reviews, TAMS makes every step simpler and more effective.",
+    image: "/img/user-1.png",
+  },
   
 ];
 

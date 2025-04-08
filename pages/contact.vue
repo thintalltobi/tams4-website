@@ -43,7 +43,7 @@
             </li>
             <li>
                 <a
-                href="https://www.google.com/maps?q=Suite+75-78,+Terrace+Wing,+TBS+Complex,+Onikan+Lagos"
+                 href="https://www.google.com/maps?q=39/40b,+TBS+Complex,+Onikan+Lagos"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="flex items-center"
@@ -54,7 +54,7 @@
                   <img src="/public/img/location.svg" alt="Location Icon for Contact Us" />
                 </div>
                 <span class="w-9/12"
-                  >Suite 75-78, Terrace Wing, TBS Complex, Onikan Lagos</span
+                  >39/40b, TBS Complex, Onikan Lagos</span
                 >
                 </a>
             </li>

@@ -1,10 +1,10 @@
 <template>
   <div class="mt-[100px]">
     <h2 class="text-4xl text-center text-black md:text-4xl font-bold mb-8">
-      Our Trusted Partners
+      Our Trusted Clients & Partners
     </h2>
     <div
-      class="py-10"
+      class="py-10 overflow-hidden"
       style="
         background: linear-gradient(
           270deg,
@@ -14,31 +14,23 @@
         );
       "
     >
-      <div class="container mx-auto px-4 text-center">
-        <!-- Partner Images -->
-        <div class="flex justify-between items-center">
-          <img
-            src="/img/lufthansa.svg"
-            alt="Partner 1"
-            
+      <div class="container mx-auto px-4">
+        <!-- Scroll Wrapper -->
+        <div class="relative">
+          <div
+            class="flex space-x-20 animate-scroll w-max items-center"
           >
-          <img
-            src="/img/firs.svg"
-            alt="Partner 2"
-            
-          >
-          <img
-            src="/img/dangote.svg"
-            alt="Partner 3"
-          >
-          <img
-            src="/img/radisson.svg"
-            alt="Partner 4"
-          >
-          <img
-            src="/img/glo.svg"
-            alt="Partner 5"
-          >
+            <!-- Duplicated logos for seamless looping -->
+            <template v-for="i in 2" :key="i">
+              <img
+                v-for="(logo, index) in logos"
+                :key="index + '-' + i"
+                :src="logo.src"
+                :alt="logo.alt"
+                class="w-[135px] h-[49px] object-contain"
+              />
+            </template>
+          </div>
         </div>
       </div>
     </div>
@@ -46,9 +38,34 @@
 </template>
 
 <script setup lang="ts">
-// No additional logic needed for now
+const logos = [
+  { src: "/img/lufthansa.svg", alt: "Partner 1" },
+  { src: "/img/firs.svg", alt: "Partner 2" },
+  { src: "/img/dangote.svg", alt: "Partner 3" },
+  { src: "/img/radisson.svg", alt: "Partner 4" },
+  { src: "/img/glo.svg", alt: "Partner 5" },
+  { src: "/img/fidson.png", alt: "Partner 6" },
+  { src: "/img/gig.png", alt: "Partner 7" },
+  { src: "/img/leadway.png", alt: "Partner 8" },
+  { src: "/img/lftz.png", alt: "Partner 9" },
+  { src: "/img/phd.png", alt: "Partner 10" },
+  { src: "/img/premier-lotto.png", alt: "Partner 11" },
+  { src: "/img/tsl.png", alt: "Partner 12" },
+];
 </script>
 
+
 <style scoped>
-/* Tailwind CSS handles most of the styling */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+}
 </style>

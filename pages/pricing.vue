@@ -74,12 +74,13 @@
             </li>
           </ul>
 
-          <button
+          
+            <a href="https://signup.tams.com.ng/signup" target="_blank"
+              >  <button
             style="border: 1px solid #d6d6d6"
             class="w-full px-6 py-3 mt-10 text-[#D6D6D6] rounded-full hover:bg-[#0564A4] hover:text-white"
-          >
-          <a href="https://signup.tams.com.ng/signup" target="_blank">Create Free Account</a>
-          </button>
+          >Create Free Account</button></a
+            >
         </div>
 
         <!-- Enterprise Plan -->
@@ -92,11 +93,14 @@
               <h2 class="text-xl text-[#0564A4] font-bold text-center">
                 Enterprise Plan
               </h2>
-              <p
-                class="text-center mt-5 md:mt-0 border bg-[#CCE5F3] text-[#0564A4] rounded-full px-10 py-3"
-              >
-                {{ pricingData.premiumPlan.price }}
-              </p>
+
+              <nuxt-link to="/contact" class="text-[#0564A4] font-semibold">
+                <p
+                  class="text-center mt-5 md:mt-0 border bg-[#CCE5F3] text-[#0564A4] rounded-full px-10 py-3"
+                >
+                  Custom Pricing
+                </p>
+              </nuxt-link>
             </div>
           </div>
 
@@ -127,13 +131,13 @@
             </li>
           </ul>
 
-          <button
-            class="w-full px-6 py-3 mt-10 bg-[#0564A4] text-white rounded-full"
-          >
-            <a href="/contact">
+          <a href="/contact"
+            ><button
+              class="w-full px-6 py-3 mt-10 bg-[#0564A4] text-white rounded-full"
+            >
               Contact Us
-            </a>
-          </button>
+            </button>
+          </a>
         </div>
       </div>
     </div>
@@ -145,7 +149,7 @@
 
         <!-- Compare Features Section -->
         <div class="bg-white rounded-lg">
-          <table class="w-full border-collapse ">
+          <table class="w-full border-collapse">
             <thead>
               <tr>
                 <th class="border-b text-left border-gray-300 px-4 py-4">
@@ -164,7 +168,7 @@
                 v-for="(feature, index) in pricingData.compareFeatures.rows"
                 :key="index"
               >
-                <td class="border-b border-gray-300 px-4 py-4 ">
+                <td class="border-b border-gray-300 px-4 py-4">
                   {{ feature.name }}
                 </td>
                 <td class="border-b border-gray-300 px-4 py-4">
@@ -262,7 +266,11 @@ const pricingData = {
       { name: "Performance Management", premium: true, enterprise: true },
       { name: "Recruitment Management", premium: true, enterprise: true },
       { name: "Api Integration", premium: false, enterprise: true },
-      { name: "Personalized server preference", premium: false, enterprise: true },
+      {
+        name: "Personalized server preference",
+        premium: false,
+        enterprise: true,
+      },
     ],
   },
 };
@@ -284,14 +292,14 @@ function decreaseEmployees() {
 }
 
 useHead({
-    title: 'Pricing',
-    meta: [
-      {
-        name: 'description',
-        content: 'Pricing plans for TAMS, a workforce management solution.',
-      },
-    ],
-  });
+  title: "Pricing",
+  meta: [
+    {
+      name: "description",
+      content: "Pricing plans for TAMS, a workforce management solution.",
+    },
+  ],
+});
 </script>
 
 <style scoped>

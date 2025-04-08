@@ -16,7 +16,7 @@
         <div class="flex justify-between items-center">
           <h3 class="text-2xl font-semibold">Our Numbers Speak for Us:</h3>
           <div>
-            <h3 class="text-2xl font-semibold mb-2">37K+</h3>
+            <h3 class="text-2xl font-semibold mb-2">1K+</h3>
             <p>Active Companies</p>
           </div>
           <div>
