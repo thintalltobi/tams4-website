@@ -90,36 +90,36 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label
-                  for="companyName"
+                  for="company_name"
                   class="block text-sm font-medium text-gray-700"
                   >Company Name</label
                 >
                 <input
-                  id="companyName"
-                  v-model="form.companyName"
+                  id="company_name"
+                  v-model="form.company_name"
                   type="text"
                   class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-[#001927] focus:border-[#001927]"
                   placeholder="Enter your company name"
                 />
-                <p v-if="errors.companyName" class="text-red-500 text-sm">
-                  {{ errors.companyName }}
+                <p v-if="errors.company_name" class="text-red-500 text-sm">
+                  {{ errors.company_name }}
                 </p>
               </div>
               <div>
                 <label
-                  for="companyEmail"
+                  for="company_email"
                   class="block text-sm font-medium text-gray-700"
                   >Company Email</label
                 >
                 <input
-                  id="companyEmail"
-                  v-model="form.companyEmail"
+                  id="company_email"
+                  v-model="form.company_email"
                   type="email"
                   class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-[#001927] focus:border-[#001927]"
                   placeholder="Enter your company email"
                 />
-                <p v-if="errors.companyEmail" class="text-red-500 text-sm">
-                  {{ errors.companyEmail }}
+                <p v-if="errors.company_email" class="text-red-500 text-sm">
+                  {{ errors.company_email }}
                 </p>
               </div>
             </div>
@@ -127,32 +127,32 @@
             <!-- Phone Number -->
             <div>
               <label
-                for="phoneNumber"
+                for="phone_number"
                 class="block text-sm font-medium text-gray-700"
                 >Phone Number</label
               >
               <input
-                id="phoneNumber"
-                v-model="form.phoneNumber"
+                id="phone_number"
+                v-model="form.phone_number"
                 type="tel"
                 class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-[#001927] focus:border-[#001927]"
                 placeholder="Enter your phone number"
               />
-              <p v-if="errors.phoneNumber" class="text-red-500 text-sm">
-                {{ errors.phoneNumber }}
+              <p v-if="errors.phone_number" class="text-red-500 text-sm">
+                {{ errors.phone_number }}
               </p>
             </div>
 
             <!-- Type of Enquiry -->
             <div>
               <label
-                for="enquiryType"
+                for="enquiry_type"
                 class="block text-sm font-medium text-gray-700"
                 >Type of Enquiry</label
               >
               <select
-                id="enquiryType"
-                v-model="form.enquiryType"
+                id="enquiry_type"
+                v-model="form.enquiry_type"
                 class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-[#001927] focus:border-[#001927]"
               >
                 <option value="" disabled>Select an enquiry type</option>
@@ -161,8 +161,8 @@
                 <option value="sales">Sales</option>
                 <option value="other">Other</option>
               </select>
-              <p v-if="errors.enquiryType" class="text-red-500 text-sm">
-                {{ errors.enquiryType }}
+              <p v-if="errors.enquiry_type" class="text-red-500 text-sm">
+                {{ errors.enquiry_type }}
               </p>
             </div>
 
@@ -208,23 +208,25 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import axios from "axios";
+import { useRuntimeConfig, useHead } from "nuxt/app";
 import { ElNotification } from "element-plus";
 
+const config = useRuntimeConfig();
 const form = ref({
   fullname: "",
-  companyName: "",
-  companyEmail: "",
-  phoneNumber: "",
-  enquiryType: "",
+  company_name: "",
+  company_email: "",
+  phone_number: "",
+  enquiry_type: "",
   message: "",
 });
 
 const errors = ref<{
   fullname?: string;
-  companyName?: string;
-  companyEmail?: string;
-  phoneNumber?: string;
-  enquiryType?: string;
+  company_name?: string;
+  company_email?: string;
+  phone_number?: string;
+  enquiry_type?: string;
   message?: string;
 }>({});
 const loading = ref(false);
@@ -232,14 +234,14 @@ const loading = ref(false);
 function validateForm() {
   errors.value = {};
   if (!form.value.fullname) errors.value.fullname = "Full name is required.";
-  if (!form.value.companyName)
-    errors.value.companyName = "Company name is required.";
-  if (!form.value.companyEmail)
-    errors.value.companyEmail = "Company email is required.";
-  if (!form.value.phoneNumber)
-    errors.value.phoneNumber = "Phone number is required.";
-  if (!form.value.enquiryType)
-    errors.value.enquiryType = "Enquiry type is required.";
+  if (!form.value.company_name)
+    errors.value.company_name = "Company name is required.";
+  if (!form.value.company_email)
+    errors.value.company_email = "Company email is required.";
+  if (!form.value.phone_number)
+    errors.value.phone_number = "Phone number is required.";
+  if (!form.value.enquiry_type)
+    errors.value.enquiry_type = "Enquiry type is required.";
   if (!form.value.message) errors.value.message = "Message is required.";
   return Object.keys(errors.value).length === 0;
 }
@@ -257,18 +259,18 @@ async function handleSubmit() {
   loading.value = true;
 
   try {
-    await axios.post("https://api.example.com/contact", form.value);
+    await axios.post(`${config.public.apiUrl}/contact-us`, form.value);
     ElNotification({
       title: "Success",
-      message: "Your message has been sent successfully.",
+      message: "Thank you for contacting us, we will get back to you soon",
       type: "success",
     });
     form.value = {
       fullname: "",
-      companyName: "",
-      companyEmail: "",
-      phoneNumber: "",
-      enquiryType: "",
+      company_name: "",
+      company_email: "",
+      phone_number: "",
+      enquiry_type: "",
       message: "",
     };
   } catch (error) {

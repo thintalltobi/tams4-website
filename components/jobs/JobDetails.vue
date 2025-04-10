@@ -4,12 +4,12 @@
       <!-- Logo and Company Name -->
       <div class="flex items-center mb-4 sm:mb-6">
         <img
-          :src="jobs[selectedJob].logo || '/img/logo-blue.svg'"
+          :src="jobs[selectedJob].company.company_logo || '/img/logo-blue.svg'"
           alt="Company Logo"
           class="h-10 w-10 rounded-full mr-3 sm:mr-4"
         />
         <h2 class="text-lg sm:text-xl font-bold text-[#0564A4]">
-          {{ jobs[selectedJob].company || "No Company Name" }}
+          {{ jobs[selectedJob].company.company_name || "No Company Name" }}
         </h2>
       </div>
 
@@ -33,7 +33,13 @@
       <div
         class="flex flex-wrap text-sm sm:text-base text-gray-600 gap-6 sm:gap-6 mb-6"
       >
-        <p>{{ jobs[selectedJob].job_location_country_id || "No Location" }}</p>
+      <p class="">
+            {{
+              jobs[selectedJob].country?.name && jobs[selectedJob].state?.name
+                ? `${jobs[selectedJob].country.name}, ${jobs[selectedJob].state.name}`
+                : jobs[selectedJob].country?.name || jobs[selectedJob].state?.name || "-"
+            }}
+          </p>
         <p>
           {{
             jobs[selectedJob].work_mode === "remote"

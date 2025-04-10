@@ -175,13 +175,13 @@
 import { ref } from "vue";
 import axios from "axios";
 import { ElNotification } from "element-plus";
+import { useRuntimeConfig } from "nuxt/app";
 
-// State
+const config = useRuntimeConfig();
 const email = ref("");
 const errors = ref<{ email?: string }>({});
 const loading = ref(false);
 
-// Validate the email input
 function validateForm() {
   errors.value = {};
   if (!email.value) {
@@ -201,7 +201,7 @@ async function handleSubscribe() {
   loading.value = true;
 
   try {
-    await axios.post("https://api.example.com/subscribe", { email: email.value });
+    await axios.post(`${config.public.apiUrl}/newsletter`, { email: email.value });
     ElNotification({
       title: "Success",
       message: "You have successfully subscribed to our newsletter.",

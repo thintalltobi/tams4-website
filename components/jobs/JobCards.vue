@@ -16,18 +16,24 @@
       >
         <div class="flex items-center mb-5">
           <img
-            :src="job.logo || '/img/logo-blue.svg'"
+            :src="job.company.company_logo || '/img/logo-blue.svg'"
             alt="Company Logo"
             class="h-12 w-12 rounded-full mr-4"
           />
           <h3 class="text-lg font-bold">
-            {{ job.company || "No Company Name" }}
+            {{ job.company.company_name || "No Company Name" }}
           </h3>
         </div>
 
         <div class="text-sm text-gray-500 px-2">
           <p class="border-b pb-4 px-2">{{ job.role || "No Role" }}</p>
-          <p class="border-b py-4 px-2">{{ job.job_location_country_id || "No Location" }}</p>
+          <p class="border-b py-4 px-2">
+            {{
+              job.country?.name && job.state?.name
+                ? `${job.country.name}, ${job.state.name}`
+                : job.country?.name || job.state?.name || "-"
+            }}
+          </p>
           <p class="border-b py-4 px-2">
             {{
               job.work_mode === "remote"
@@ -77,13 +83,11 @@
   </div>
 </template>
 
-
 <script setup lang="ts">
 import { defineProps, defineEmits, ref, computed } from "vue";
 
 interface Job {
   logo: string;
-  company: string;
   role: string;
   work_mode: string;
   location: string;
@@ -91,6 +95,18 @@ interface Job {
   remaining: number;
   updated_at: string;
   job_location_country_id: number;
+  company: {
+    company_name: string;
+    company_logo: string;
+  };
+  country: {
+    id: number;
+    name: string;
+  } | null;
+  state: {
+    id: number;
+    name: string;
+  } | null;
 }
 
 const props = defineProps<{
@@ -133,5 +149,3 @@ function formatDate(dateStr: string): string {
 
 defineExpose({ currentPage });
 </script>
-
-
