@@ -5,7 +5,7 @@
       v-if="candidates.length === 0"
       class="text-gray-500 flex justify-center items-center flex-col text-center py-40"
     >
-      <img class="w-16 h-16 mb-4" src="/public/img/empty.svg" alt="" >
+      <img class="w-16 h-16 mb-4" src="/public/img/empty.svg" alt="" />
       <p>Job post will appear here</p>
     </div>
     <table v-else class="w-full border-collapse border border-gray-300">

@@ -23,42 +23,42 @@
         label="ID"
         width="80"
         align="center"
-      ></el-table-column>
+      />
 
       <!-- Role Column -->
       <el-table-column
         prop="role"
         label="ROLE"
         align="center"
-      ></el-table-column>
+      />
 
       <!-- Job Type Column -->
       <el-table-column
         prop="jobType"
         label="Job Type"
         align="center"
-      ></el-table-column>
+      />
 
       <!-- Work Mode Column -->
       <el-table-column
         prop="workMode"
         label="Work Mode"
         align="center"
-      ></el-table-column>
+      />
 
       <!-- Applicant No Column -->
       <el-table-column
         prop="applicantNo"
         label="Applicant No"
         align="center"
-      ></el-table-column>
+      />
 
       <!-- Application Date Column -->
       <el-table-column
         prop="applicationDate"
         label="Application Date"
         align="center"
-      ></el-table-column>
+      />
 
       <!-- Action Column -->
       <el-table-column
@@ -112,7 +112,7 @@ const jobs = ref([
 ]);
 
 // Handle dropdown actions
-function handleAction(row: any) {
+function handleAction(row: {role: string}) {
   ElMessage({
     message: `Action triggered for ${row.role}`,
     type: "info",
