@@ -23,7 +23,7 @@
 
         <button
           class="inline-block text-center px-6 py-2 border border-[#0564A4] text-blue-500 rounded-md hover:bg-[#0564A4] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#0564A4]"
-          @click="handleApply"
+          @click="handleApply(jobs[selectedJob].uuid)"
         >
           Apply Now
         </button>
@@ -77,17 +77,23 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter } from "vue-router";
 import { defineProps } from "vue";
+const router = useRouter();
 
 interface Job {
   logo: string;
   id: number;
-  company: string;
+  company: {
+    company_name: string;
+    company_logo: string;
+  };
   role: string;
   work_mode: string;
   location: string;
   type: string;
   posted: string;
+  uuid: string;
   remaining: string;
   workType: string;
   description: string;
@@ -97,6 +103,14 @@ interface Job {
   created_at: string;
   updated_at: string;
   job_location_country_id: number;
+  country: {
+    id: number;
+    name: string;
+  };
+  state: {
+    id: number;
+    name: string;
+  };
 }
 
 function formatDate(dateStr: string): string {
@@ -113,11 +127,7 @@ defineProps<{
   selectedJob: number | null;
 }>();
 
-const emit = defineEmits<{
-  (e: "pageIndex", payload: number): void;
-}>();
-
-function handleApply() {
-  emit("pageIndex", 2);
+function handleApply(uuid: string) {
+  router.push(`/jobs/${uuid}`)
 }
 </script>
