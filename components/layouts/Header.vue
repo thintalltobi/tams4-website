@@ -65,7 +65,7 @@
       <button
         class="px-6 py-3 bg-[#0564A4] hover:bg-[#001927] hidden md:flex text-white rounded-md"
       >
-      <a href="https://signup.tams.com.ng/signup" target="_blank"> Get Started </a>
+      <a href="/auth/signup" target="_blank"> Get Started </a>
       </button>
 
       <!-- Hamburger Menu (Mobile) -->
@@ -141,7 +141,7 @@
         <button
           class="px-4 py-2 bg-[#0564A4] hover:bg-[#001927] text-white rounded-md"
         >
-        <a href="https://signup.tams.com.ng/signup" target="_blank"> Get Started </a>
+        <a href="/auth/signup" target="_blank"> Get Started </a>
         </button>
       </div>
     </header>

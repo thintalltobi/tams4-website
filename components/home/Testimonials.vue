@@ -32,7 +32,7 @@
               <div
                 class="mt-6 cursor-pointer font-semibold inline-flex items-center gap-3"
               >
-              <a href="https://signup.tams.com.ng/signup" target="_blank"> Get Started </a>
+              <a href="/auth/signup" target="_blank"> Get Started </a>
                 <svg
                   width="16"
                   height="12"

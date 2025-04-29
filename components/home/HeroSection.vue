@@ -14,7 +14,7 @@
       </p>
       <div class="flex justify-center space-x-4 mb-16">
         <button class="px-6 py-3 border border-white text-white rounded-md">
-          <a href="https://signup.tams.com.ng/signup" target="_blank">
+          <a href="/auth/signup" target="_blank">
             Get Started
           </a>
         </button>

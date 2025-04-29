@@ -118,7 +118,7 @@
             <p class="text-center text-sm text-gray-600">
               Don't have an account?
               
-              <a href="https://signup.tams.com.ng/signup" target="_blank" class="text-[#0564A4] hover:underline"
+              <a href="/auth/signup" target="_blank" class="text-[#0564A4] hover:underline"
                 >Create an account</a
               >
             </p>
