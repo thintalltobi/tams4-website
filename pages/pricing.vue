@@ -75,7 +75,7 @@
           </ul>
 
           
-            <a href="https://signup.tams.com.ng/signup" target="_blank"
+            <a href="/auth/signup" target="_blank"
               >  <button
             style="border: 1px solid #d6d6d6"
             class="w-full px-6 py-3 mt-10 text-[#D6D6D6] rounded-full hover:bg-[#0564A4] hover:text-white"

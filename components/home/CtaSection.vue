@@ -15,7 +15,7 @@
           <div class="flex justify-center space-x-4">
             <button class="px-6 py-3 border border-white text-white rounded-md hover:bg-[#001927]">
               
-              <a href="https://signup.tams.com.ng/signup" target="_blank">
+              <a href="/auth/signup" target="_blank">
                 Create Free Account
               </a>
             </button>
