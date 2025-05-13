@@ -30,7 +30,7 @@
             <!-- Company Details -->
             <div>
               <h3 class="text-lg font-semibold mb-4">Company Details</h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="mt-6">
                 <!-- Company Name -->
                 <div>
                   <label
@@ -40,34 +40,40 @@
                   >
                   <input
                     id="companyName"
-                    v-model="form.companyName"
+                    v-model="form.company_name"
                     type="text"
                     class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Enter your company name"
                   />
-                  <p v-if="errors.companyName" class="text-red-500 text-sm">
-                    {{ errors.companyName }}
+                  <p v-if="errors.company_name" class="text-red-500 text-sm">
+                    {{ errors.company_name }}
                   </p>
                 </div>
 
-                <!-- Phone Number -->
+             
+              </div>
+
+               <div class="mt-6">
+                <!-- Company Address -->
                 <div>
                   <label
-                    for="companyPhone"
+                    for="companyAddress"
                     class="block text-sm font-medium text-gray-700"
-                    >Phone Number</label
+                    >Company Address</label
                   >
                   <input
-                    id="companyPhone"
-                    v-model="form.companyPhone"
-                    type="tel"
+                    id="companyAddress"
+                    v-model="form.company_address"
+                    type="text"
                     class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Enter your phone number"
+                    placeholder="Enter your company address"
                   />
-                  <p v-if="errors.companyPhone" class="text-red-500 text-sm">
-                    {{ errors.companyPhone }}
+                  <p v-if="errors.company_address" class="text-red-500 text-sm">
+                    {{ errors.company_address }}
                   </p>
                 </div>
+
+             
               </div>
 
               <!-- Company URL -->
@@ -80,7 +86,7 @@
                 <div class="flex">
                   <input
                     id="companyUrl"
-                    v-model="form.companyUrl"
+                    v-model="form.desired_url"
                     type="text"
                     class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-l-md focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Enter your company URL"
@@ -91,8 +97,8 @@
                     .tams.com.ng
                   </span>
                 </div>
-                <p v-if="errors.companyUrl" class="text-red-500 text-sm">
-                  {{ errors.companyUrl }}
+                <p v-if="errors.desired_url" class="text-red-500 text-sm">
+                  {{ errors.desired_url }}
                 </p>
               </div>
 
@@ -105,18 +111,16 @@
                 >
                 <select
                   id="industry"
-                  v-model="form.industry"
+                  v-model="form.industry_id"
                   class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="" disabled>Select your industry</option>
-                  <option value="technology">Technology</option>
-                  <option value="healthcare">Healthcare</option>
-                  <option value="finance">Finance</option>
-                  <option value="education">Education</option>
-                  <option value="other">Other</option>
+                  <option v-for="industry in industries" :key="industry.id" :value="industry.id">
+                    {{ industry.industry_type }}
+                  </option>
                 </select>
-                <p v-if="errors.industry" class="text-red-500 text-sm">
-                  {{ errors.industry }}
+                <p v-if="errors.industry_id" class="text-red-500 text-sm">
+                  {{ errors.industry_id }}
                 </p>
               </div>
             </div>
@@ -134,13 +138,13 @@
                   >
                   <input
                     id="firstName"
-                    v-model="form.firstName"
+                    v-model="form.first_name"
                     type="text"
                     class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Enter your first name"
                   />
-                  <p v-if="errors.firstName" class="text-red-500 text-sm">
-                    {{ errors.firstName }}
+                  <p v-if="errors.first_name" class="text-red-500 text-sm">
+                    {{ errors.first_name }}
                   </p>
                 </div>
 
@@ -153,13 +157,13 @@
                   >
                   <input
                     id="lastName"
-                    v-model="form.lastName"
+                    v-model="form.last_name"
                     type="text"
                     class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Enter your last name"
                   />
-                  <p v-if="errors.lastName" class="text-red-500 text-sm">
-                    {{ errors.lastName }}
+                  <p v-if="errors.last_name" class="text-red-500 text-sm">
+                    {{ errors.last_name }}
                   </p>
                 </div>
               </div>
@@ -192,13 +196,13 @@
                 >
                 <input
                   id="adminPhone"
-                  v-model="form.adminPhone"
+                  v-model="form.phone_no"
                   type="tel"
                   class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Enter your phone number"
                 />
-                <p v-if="errors.adminPhone" class="text-red-500 text-sm">
-                  {{ errors.adminPhone }}
+                <p v-if="errors.phone_no" class="text-red-500 text-sm">
+                  {{ errors.phone_no }}
                 </p>
               </div>
 
@@ -221,26 +225,7 @@
                     {{ errors.username }}
                   </p>
                 </div>
-                <div>
-                  <label
-                    for="role"
-                    class="block text-sm font-medium text-gray-700"
-                    >Role</label
-                  >
-                  <select
-                    id="role"
-                    v-model="form.role"
-                    class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                  >
-                    <option value="" disabled>Select a role</option>
-                    <option value="admin">Admin</option>
-                    <option value="manager">Manager</option>
-                    <option value="employee">Employee</option>
-                  </select>
-                  <p v-if="errors.role" class="text-red-500 text-sm">
-                    {{ errors.role }}
-                  </p>
-                </div>
+                
               </div>
 
               <!-- Password and Confirm Password -->
@@ -270,7 +255,7 @@
                   >
                   <input
                     id="confirmPassword"
-                    v-model="form.confirmPassword"
+                    v-model="confirm.confirmPassword"
                     type="password"
                     class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Confirm your password"
@@ -314,33 +299,37 @@
 import { ref } from "vue";
 import axios from "axios";
 import { ElNotification } from "element-plus";
+import { useRuntimeConfig } from "nuxt/app";
 
+const config = useRuntimeConfig();
 const form = ref({
-  companyName: "",
-  companyPhone: "",
-  companyUrl: "",
-  industry: "",
-  firstName: "",
-  lastName: "",
+  company_name: "",
+  desired_url: "",
+  industry_id: 1,
+  first_name: "",
+  last_name: "",
   email: "",
-  adminPhone: "",
+  phone_no: "",
   username: "",
-  role: "",
   password: "",
-  confirmPassword: "",
+  accept_terms_conditions: true,
+  company_address: ''
 });
 
+const confirm = ref({
+  confirmPassword: ""
+})
+
 const errors = ref<{
-  companyName?: string;
-  companyPhone?: string;
-  companyUrl?: string;
-  industry?: string;
-  firstName?: string;
-  lastName?: string;
+  company_name?: string;
+  company_address?: string;
+  desired_url?: string;
+  industry_id?: string;
+  first_name?: string;
+  last_name?: string;
   email?: string;
-  adminPhone?: string;
+  phone_no?: string;
   username?: string;
-  role?: string;
   password?: string;
   confirmPassword?: string;
 }>({});
@@ -348,21 +337,40 @@ const loading = ref(false);
 
 function validateForm() {
   errors.value = {};
-  if (!form.value.companyName) errors.value.companyName = "Company name is required.";
-  if (!form.value.companyPhone) errors.value.companyPhone = "Company phone is required.";
-  if (!form.value.companyUrl) errors.value.companyUrl = "Company URL is required.";
-  if (!form.value.industry) errors.value.industry = "Industry is required.";
-  if (!form.value.firstName) errors.value.firstName = "First name is required.";
-  if (!form.value.lastName) errors.value.lastName = "Last name is required.";
+  if (!form.value.company_name) errors.value.company_name = "Company name is required.";
+  if (!form.value.desired_url) errors.value.desired_url = "Company URL is required.";
+  if (!form.value.industry_id) errors.value.industry_id = "Industry is required.";
+  if (!form.value.first_name) errors.value.first_name = "First name is required.";
+  if (!form.value.last_name) errors.value.last_name = "Last name is required.";
   if (!form.value.email) errors.value.email = "Email is required.";
-  if (!form.value.adminPhone) errors.value.adminPhone = "Admin phone is required.";
+  if (!form.value.phone_no) errors.value.phone_no = "Admin phone is required.";
   if (!form.value.username) errors.value.username = "Username is required.";
-  if (!form.value.role) errors.value.role = "Role is required.";
   if (!form.value.password) errors.value.password = "Password is required.";
-  if (form.value.password !== form.value.confirmPassword) {
+  if (form.value.password !== confirm.value.confirmPassword) {
     errors.value.confirmPassword = "Passwords do not match.";
   }
   return Object.keys(errors.value).length === 0;
+}
+
+const industries = ref<{
+  id: number;
+  industry_type: string;
+}[]>([]);
+
+async function fetchIndustries() {
+  try {
+    const response = await axios.get(`${config.public.apiUrl}industries`);
+    console.log(response.data.data);
+    
+    industries.value = response.data.data; 
+  } catch (error) {
+    ElNotification({
+      title: "Error",
+      message: "Failed to load industries. Please try again later.",
+      type: "error",
+    });
+    console.error("Error fetching industries:", error);
+  }
 }
 
 async function handleSubmit() {
@@ -378,36 +386,43 @@ async function handleSubmit() {
   loading.value = true;
 
   try {
-    await axios.post("https://api.example.com/signup", form.value);
+    await axios.post(`${config.public.apiUrl}auth/signup`, form.value);
     ElNotification({
       title: "Success",
-      message: "Your account has been created successfully.",
+      message: "Your account has been created successfully, kindly check your email for the activation link",
       type: "success",
     });
     form.value = {
-      companyName: "",
-      companyPhone: "",
-      companyUrl: "",
-      industry: "",
-      firstName: "",
-      lastName: "",
+      company_name: "",
+      phone_no: "",
+      desired_url: "",
+      industry_id: 1,
+      first_name: "",
+      last_name: "",
       email: "",
-      adminPhone: "",
       username: "",
-      role: "",
       password: "",
-      confirmPassword: "",
+      accept_terms_conditions: true,
+      company_address: ""
     };
-  } catch (error) {
+
+    confirm.value = {
+      confirmPassword: ""
+    }
+  } catch (error: any) {    
     ElNotification({
       title: "Error",
-      message: `${error || "An error occurred while creating your account."}`,
+      message: `${error.response.data.message || "An error occurred while creating your account."}`,
       type: "error",
     });
   } finally {
     loading.value = false;
   }
 }
+
+onMounted(() => {
+  fetchIndustries();
+});
 
 useHead({
   title: "Signup",
