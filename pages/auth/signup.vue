@@ -299,7 +299,9 @@
 import { ref } from "vue";
 import axios from "axios";
 import { ElNotification } from "element-plus";
+import { useRuntimeConfig } from "nuxt/app";
 
+const config = useRuntimeConfig();
 const form = ref({
   company_name: "",
   desired_url: "",
@@ -357,7 +359,7 @@ const industries = ref<{
 
 async function fetchIndustries() {
   try {
-    const response = await axios.get("https://staging-api.tams.com.ng/api/v1/industries");
+    const response = await axios.get(`${config.public.apiUrl}industries`);
     console.log(response.data.data);
     
     industries.value = response.data.data; 
@@ -384,8 +386,7 @@ async function handleSubmit() {
   loading.value = true;
 
   try {
-    const url = process.env.NUXT_PUBLIC_API_URL || 'https://api.tams.com.ng/api/v1/'
-    await axios.post(url, form.value);
+    await axios.post(`${config.public.apiUrl}auth/signup`, form.value);
     ElNotification({
       title: "Success",
       message: "Your account has been created successfully, kindly check your email for the activation link",
@@ -408,10 +409,10 @@ async function handleSubmit() {
     confirm.value = {
       confirmPassword: ""
     }
-  } catch (error) {
+  } catch (error: any) {    
     ElNotification({
       title: "Error",
-      message: `${error || "An error occurred while creating your account."}`,
+      message: `${error.response.data.message || "An error occurred while creating your account."}`,
       type: "error",
     });
   } finally {
