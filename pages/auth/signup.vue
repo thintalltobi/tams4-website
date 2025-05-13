@@ -53,6 +53,29 @@
              
               </div>
 
+               <div class="mt-6">
+                <!-- Company Address -->
+                <div>
+                  <label
+                    for="companyAddress"
+                    class="block text-sm font-medium text-gray-700"
+                    >Company Address</label
+                  >
+                  <input
+                    id="companyAddress"
+                    v-model="form.company_address"
+                    type="text"
+                    class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Enter your company address"
+                  />
+                  <p v-if="errors.company_address" class="text-red-500 text-sm">
+                    {{ errors.company_address }}
+                  </p>
+                </div>
+
+             
+              </div>
+
               <!-- Company URL -->
               <div class="mt-6">
                 <label
@@ -92,11 +115,9 @@
                   class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="" disabled>Select your industry</option>
-                  <option value=1>Technology</option>
-                  <option value="2">Healthcare</option>
-                  <option value="3">Finance</option>
-                  <option value="4">Education</option>
-                  <option value="5">Other</option>
+                  <option v-for="industry in industries" :key="industry.id" :value="industry.id">
+                    {{ industry.industry_type }}
+                  </option>
                 </select>
                 <p v-if="errors.industry_id" class="text-red-500 text-sm">
                   {{ errors.industry_id }}
@@ -290,7 +311,7 @@ const form = ref({
   username: "",
   password: "",
   accept_terms_conditions: true,
-  company_address: 'Lagos'
+  company_address: ''
 });
 
 const confirm = ref({
@@ -299,6 +320,7 @@ const confirm = ref({
 
 const errors = ref<{
   company_name?: string;
+  company_address?: string;
   desired_url?: string;
   industry_id?: string;
   first_name?: string;
@@ -328,6 +350,27 @@ function validateForm() {
   return Object.keys(errors.value).length === 0;
 }
 
+const industries = ref<{
+  id: number;
+  industry_type: string;
+}[]>([]);
+
+async function fetchIndustries() {
+  try {
+    const response = await axios.get("https://staging-api.tams.com.ng/api/v1/industries");
+    console.log(response.data.data);
+    
+    industries.value = response.data.data; 
+  } catch (error) {
+    ElNotification({
+      title: "Error",
+      message: "Failed to load industries. Please try again later.",
+      type: "error",
+    });
+    console.error("Error fetching industries:", error);
+  }
+}
+
 async function handleSubmit() {
   if (!validateForm()) {
     ElNotification({
@@ -341,26 +384,30 @@ async function handleSubmit() {
   loading.value = true;
 
   try {
-    await axios.post("https://staging-api.tams.com.ng/api/v1/auth/signup", form.value);
+    const url = process.env.NUXT_PUBLIC_API_URL || 'https://api.tams.com.ng/api/v1/'
+    await axios.post(url, form.value);
     ElNotification({
       title: "Success",
-      message: "Your account has been created successfully.",
+      message: "Your account has been created successfully, kindly check your email for the activation link",
       type: "success",
     });
-    // form.value = {
-    //   companyName: "",
-    //   companyPhone: "",
-    //   companyUrl: "",
-    //   industry: "",
-    //   firstName: "",
-    //   lastName: "",
-    //   email: "",
-    //   adminPhone: "",
-    //   username: "",
-    //   role: "",
-    //   password: "",
-    //   confirmPassword: "",
-    // };
+    form.value = {
+      company_name: "",
+      phone_no: "",
+      desired_url: "",
+      industry_id: 1,
+      first_name: "",
+      last_name: "",
+      email: "",
+      username: "",
+      password: "",
+      accept_terms_conditions: true,
+      company_address: ""
+    };
+
+    confirm.value = {
+      confirmPassword: ""
+    }
   } catch (error) {
     ElNotification({
       title: "Error",
@@ -371,6 +418,10 @@ async function handleSubmit() {
     loading.value = false;
   }
 }
+
+onMounted(() => {
+  fetchIndustries();
+});
 
 useHead({
   title: "Signup",
