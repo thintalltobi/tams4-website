@@ -125,6 +125,24 @@
               </div>
             </div>
 
+              <!-- Referral Code -->
+              <div class="mt-6">
+                <label
+                  class="block text-sm font-medium text-gray-700"
+                  >Referral Code</label
+                >
+                <input
+                  id="referral_code"
+                  v-model="form.referral_code"
+                  type="text"
+                  class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Referral Code (Optional)"
+                />
+                <!-- <p v-if="errors.referral_code" class="text-red-500 text-sm">
+                  {{ errors.referral_code }}
+                </p> -->
+              </div>
+
             <!-- Administrator Details -->
             <div>
               <h3 class="text-lg font-semibold mb-4">Administrator Details</h3>
@@ -313,7 +331,8 @@ const form = ref({
   username: "",
   password: "",
   accept_terms_conditions: true,
-  company_address: ''
+  company_address: '',
+  referral_code: ''
 });
 
 const confirm = ref({
@@ -359,7 +378,7 @@ const industries = ref<{
 
 async function fetchIndustries() {
   try {
-    const response = await axios.get(`${config.public.apiUrl}industries`);
+    const response = await axios.get(`${config.public.apiUrl}/industries`);
     console.log(response.data.data);
     
     industries.value = response.data.data; 
@@ -385,8 +404,8 @@ async function handleSubmit() {
 
   loading.value = true;
 
-  try {
-    await axios.post(`${config.public.apiUrl}auth/signup`, form.value);
+  try {    
+    await axios.post(`${config.public.apiUrl}/auth/signup`, form.value);
     ElNotification({
       title: "Success",
       message: "Your account has been created successfully, kindly check your email for the activation link",
@@ -403,7 +422,8 @@ async function handleSubmit() {
       username: "",
       password: "",
       accept_terms_conditions: true,
-      company_address: ""
+      company_address: "",
+      referral_code: ""
     };
 
     confirm.value = {
