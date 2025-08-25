@@ -128,7 +128,6 @@
               <!-- Referral Code -->
               <div class="mt-6">
                 <label
-                  for="email"
                   class="block text-sm font-medium text-gray-700"
                   >Referral Code</label
                 >
