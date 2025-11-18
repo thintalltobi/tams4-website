@@ -254,13 +254,24 @@
                     class="block text-sm font-medium text-gray-700"
                     >Password</label
                   >
-                  <input
-                    id="password"
-                    v-model="form.password"
-                    type="password"
-                    class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Enter your password"
-                  />
+                    <div class="relative">
+                      <input
+                        id="password"
+                        v-model="form.password"
+                        :type="passwordVivibility.passwordVisible ? 'text' : 'password'"
+                        class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 pr-12"
+                        placeholder="Enter your password"
+                      />
+
+                      <!-- Suffix Icon -->
+                      <img
+                        :src="passwordVivibility.passwordVisible ? '/img/eye.svg' : '/img/eye-slash.svg'"
+                        class="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 cursor-pointer"
+                        :alt="passwordVivibility.passwordVisible ? 'Hide password' : 'Show password'"
+                        :aria-label="passwordVivibility.passwordVisible ? 'Hide password' : 'Show password'"
+                        @click="passwordVivibility.passwordVisible = !passwordVivibility.passwordVisible"
+                      />
+                    </div>
                   <p v-if="errors.password" class="text-red-500 text-sm">
                     {{ errors.password }}
                   </p>
@@ -271,13 +282,27 @@
                     class="block text-sm font-medium text-gray-700"
                     >Confirm Password</label
                   >
-                  <input
-                    id="confirmPassword"
-                    v-model="confirm.confirmPassword"
-                    type="password"
-                    class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Confirm your password"
-                  />
+                  <div class="relative">
+                    <input
+                      id="confirmPassword"
+                      v-model="confirm.confirmPassword"
+                      :type="passwordVivibility.confirmPasswordVisible ? 'text' : 'password'"
+                      class="mt-1 block w-full px-4 py-3 pr-12 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="Confirm your password"
+                    />
+
+                    <!-- Eye Icon -->
+                    <img
+                      :src="
+                        passwordVivibility.confirmPasswordVisible
+                          ? '/img/eye.svg'
+                          : '/img/eye-slash.svg'
+                      "
+                      class="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 cursor-pointer"
+                      :alt="passwordVivibility.confirmPasswordVisible ? 'Hide password' : 'Show password'"
+                      @click="passwordVivibility.confirmPasswordVisible = !passwordVivibility.confirmPasswordVisible"
+                    />
+                  </div>
                   <p v-if="errors.confirmPassword" class="text-red-500 text-sm">
                     {{ errors.confirmPassword }}
                   </p>
@@ -320,6 +345,7 @@ import { ElNotification } from "element-plus";
 import { useRuntimeConfig } from "nuxt/app";
 
 const config = useRuntimeConfig();
+
 const form = ref({
   company_name: "",
   desired_url: "",
@@ -338,6 +364,11 @@ const form = ref({
 const confirm = ref({
   confirmPassword: ""
 })
+
+const passwordVivibility = ref({
+   passwordVisible: false,
+    confirmPasswordVisible: false,
+});
 
 const errors = ref<{
   company_name?: string;
@@ -456,5 +487,10 @@ useHead({
 </script>
 
 <style scoped>
+.visibility-toggle {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
 /* Tailwind CSS handles most of the styling */
 </style>
