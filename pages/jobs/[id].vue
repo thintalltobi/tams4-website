@@ -91,7 +91,7 @@
                 <label
                   for="firstName"
                   class="block text-sm font-medium text-gray-700"
-                  >First Name</label
+                  >First Name2</label
                 >
                 <input
                   id="firstName"
@@ -211,7 +211,7 @@
                 id="resume"
                 type="file"
                 class="mt-1 w-full px-4 py-3 border rounded-md focus:ring-[#0564A4] focus:border-[#0564A4]"
-                @change="(e: any) => form.resumeFile = e.target.files[0]"
+                 @change="handleResumeChange"
               />
             </div>
 
@@ -232,7 +232,6 @@
 
   </div>
 </template>
-
 <script setup lang="ts">
 import { ref, reactive, onMounted } from "vue";
 import axios from "axios";
@@ -240,11 +239,13 @@ import { ElNotification } from "element-plus";
 import Loading from "../../components/base/loading.vue";
 import { useRoute, useRuntimeConfig } from "nuxt/app";
 import { useRouter } from "vue-router";
+
 const route = useRoute();
 const router = useRouter();
 const jobId = route.params.id;
 
 const config = useRuntimeConfig();
+
 interface Job {
   logo: string;
   id: number;
@@ -283,9 +284,8 @@ const form = reactive({
   email: "",
   experience: "",
   phoneNumber: "",
-  resumeFile: null as File | null,
+  file: null as File | null,
 });
-
 
 onMounted(() => {
   const getSingleJob = async () => {
@@ -304,8 +304,17 @@ onMounted(() => {
 
   getSingleJob();
 });
+
+function handleResumeChange(event: Event) {
+  const target = event.target as HTMLInputElement;
+  const file = target.files?.[0] || null;
+  form.file = file;
+  console.log("Selected file:", file);
+}
+
 // Format Date
-function formatDate(dateStr: string): string {
+function formatDate(dateStr: string | undefined): string {
+  if (!dateStr) return "-";
   const date = new Date(dateStr);
   return date.toLocaleDateString("en-US", {
     year: "numeric",
@@ -321,21 +330,60 @@ function handleApply() {
 
 // Validate the form
 function validateForm() {
-  if (
-    !form.firstName ||
-    !form.lastName ||
-    !form.email ||
-    !form.experience ||
-    !form.phoneNumber ||
-    !form.resumeFile
-  ) {
+  if (!form.firstName.trim()) {
     ElNotification({
       title: "Validation Error",
-      message: "Please fill all required fields.",
+      message: "First name is required.",
       type: "warning",
     });
     return false;
   }
+
+  if (!form.lastName.trim()) {
+    ElNotification({
+      title: "Validation Error",
+      message: "Last name is required.",
+      type: "warning",
+    });
+    return false;
+  }
+
+  if (!form.email.trim()) {
+    ElNotification({
+      title: "Validation Error",
+      message: "Email is required.",
+      type: "warning",
+    });
+    return false;
+  }
+
+  if (!form.experience) {
+    ElNotification({
+      title: "Validation Error",
+      message: "Please select your years of experience.",
+      type: "warning",
+    });
+    return false;
+  }
+
+  if (!form.phoneNumber.trim()) {
+    ElNotification({
+      title: "Validation Error",
+      message: "Phone number is required.",
+      type: "warning",
+    });
+    return false;
+  }
+
+  if (!form.file) {
+    ElNotification({
+      title: "Validation Error",
+      message: "Please upload your resume.",
+      type: "warning",
+    });
+    return false;
+  }
+
   return true;
 }
 
@@ -346,18 +394,24 @@ async function handleSubmit() {
   loading.value = true;
 
   try {
-    // const resumeURL = await getBase64(form.resumeFile);
-    const payload = {
-      uuid: jobs?.value?.uuid,
-      name: `${form.firstName} ${form.lastName}`,
-      email: form.email,
-      phone_number: form.phoneNumber,
-      resume_url: "https://tams.com.ng/_nuxt/img/tams-logo.9079316.svg",
-      years_of_experience: Number(form.experience),
-      custom_answers: custom_answers.value,
-    };
+    console.log("Form before submit:", {
+      ...form,
+      file: form.file ? form.file.name : null,
+    });
 
-    await axios.post(`${config.public.apiUrl}/job-application`, payload);
+    const formData = new FormData();
+
+    formData.append("uuid", jobs.value?.uuid ?? "");
+    formData.append("name", `${form.firstName} ${form.lastName}`);
+    formData.append("email", form.email);
+    formData.append("phone_number", form.phoneNumber);
+    formData.append("years_of_experience", form.experience);
+    // If backend expects "resume_file", change this key:
+    formData.append("file", form.file as File);
+    formData.append("custom_answers", JSON.stringify(custom_answers.value));
+
+    await axios.post(`${config.public.apiUrl}/job-application`, formData);
+    // 👆 no explicit Content-Type header
 
     ElNotification({
       title: "Success",
@@ -365,20 +419,21 @@ async function handleSubmit() {
       type: "success",
     });
 
-    // Optionally reset form
+    // Reset form
     Object.assign(form, {
       firstName: "",
       lastName: "",
       email: "",
       experience: "",
       phoneNumber: "",
-      resumeFile: null,
+      file: null,
     });
 
     custom_answers.value = [];
 
     handleApply();
   } catch (error: unknown) {
+    console.error("Submit error:", error);
     if (error instanceof Error) {
       ElNotification({
         title: "Error",
@@ -396,18 +451,7 @@ async function handleSubmit() {
     loading.value = false;
   }
 }
-
-// Helper to convert file to Base64 string (simulate upload)
-// function getBase64(file: File): Promise<string> {
-//   return new Promise((resolve, reject) => {
-//     const reader = new FileReader();
-//     reader.readAsDataURL(file);
-//     reader.onload = () => resolve(reader.result as string);
-//     reader.onerror = (error) => reject(error);
-//   });
-// }
 </script>
-
 <style scoped>
 /* Tailwind CSS handles most of the styling */
 </style>
